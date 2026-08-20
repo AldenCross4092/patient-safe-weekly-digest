@@ -78,7 +78,8 @@ async function createCron(input: { cron_expr: string; task: string }): Promise<{
     if (response.status >= 500) {
       throw new Error(`Infrai transport response: HTTP ${response.status}`);
     }
-    return createdCronSchema.parse(envelope.data);
+    const created = createdCronSchema.parse(envelope.data);
+    return { job_id: created.job_id! };
   }
   throw new Error("Infrai request retry budget exhausted");
 }
